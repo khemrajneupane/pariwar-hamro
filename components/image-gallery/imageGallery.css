@@ -1,0 +1,61 @@
+/* ImageGallery.css */
+
+/* Container */
+.gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Override library styles */
+.gallery-container .image-gallery {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Images */
+.gallery-container .image-gallery-content .image-gallery-slide img {
+  max-height: 70vh;
+  width: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Delete Button */
+.gallery-container .delete-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.gallery-container .trash-icon {
+  color: #ff0000;
+  font-size: 20px;
+}
+
+/* Thumbnails */
+.gallery-container .image-gallery-thumbnails-wrapper {
+  background: #f8f9fa;
+}
+
+.gallery-container .image-gallery-thumbnail.active {
+  border: 3px solid #6e48aa;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+  .gallery-container .image-gallery-content .image-gallery-slide img {
+    max-height: 50vh;
+  }
+}
