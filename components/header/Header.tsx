@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import "./header.css";
+import DigitalWatch from "../digital-watch/DigitalWatch";
 
 const Header = () => {
   const [isMembersVisible, setIsMembersVisible] = useState(false);
@@ -64,14 +65,14 @@ const Header = () => {
           <div className="d-flex align-items-center">
             <div className="position-relative me-3">
               <button
-                className={`btn btn-light rounded-circle p-3 d-flex align-items-center justify-content-center ${
+                className={`btn btn-light rounded-circle p-2 p-md-3 d-flex align-items-center justify-content-center ${
                   isMembersVisible ? "active bg-warning" : ""
                 }`}
                 onClick={() => setIsMembersVisible(!isMembersVisible)}
                 ref={dropdownRef}
                 aria-label="Family members"
               >
-                <span className="fs-4">👨‍👩‍👧‍👦</span>
+                <span className="fs-6">👨‍👩‍👧‍👦</span>
               </button>
 
               {isMembersVisible && (
@@ -88,7 +89,7 @@ const Header = () => {
                         key={index}
                         className="member-item py-2 px-3 rounded hover-bg-light"
                       >
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center fs-6 fs-md-6 fs-lg-5 fs-xl-4">
                           <span className="me-2">👤</span>
                           <span>{member}</span>
                         </div>
@@ -99,29 +100,32 @@ const Header = () => {
               )}
             </div>
 
-            <h1 className="logo-text mb-0 fs-3 fw-bold">
+            <h1 className="logo-text mb-0 fs-6 fs-md-5 fs-lg-4 fs-xl-3 fw-bold">
               <Link href="/" className="text-white text-decoration-none">
-                {`Hamro Pariwar ${data?.user?.name ? data?.user?.name : ""}`}
+                {`हाम्रो परिवार ${data?.user?.name ? data?.user?.name : ""}`}
               </Link>
             </h1>
           </div>
 
           {/* Current Date */}
-          <div className="current-date d-none d-md-block bg-white text-primary rounded-pill px-3 py-1 fw-semibold">
+          <div className="d-none d-lg-block bg-white text-primary rounded-pill px-3 py-1 fw-semibold">
             {formattedDate}
+          </div>
+          <div className="current-date d-none d-md-block bg-white text-primary rounded-pill px-3 py-1 fw-semibold">
+            {<DigitalWatch />}
           </div>
 
           {/* Navigation Links */}
           <nav className="nav-links d-flex align-items-center gap-3">
             <Link
               href="/image-upload"
-              className="nav-link btn btn-outline-light btn-sm px-3 py-1 rounded-pill"
+              className="nav-link btn btn-success btn-sm px-3 py-1 rounded-pill"
             >
               <i className="fas fa-cloud-upload-alt me-2"></i>Upload
             </Link>
             <Link
               href="/"
-              className="nav-link btn btn-outline-light btn-sm px-3 py-1 rounded-pill"
+              className="nav-link btn btn-success btn-sm px-3 py-1 rounded-pill"
             >
               <i className="fas fa-images me-2"></i>Gallery
             </Link>

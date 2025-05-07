@@ -116,12 +116,14 @@ const Login = () => {
             </button>
             <button
               type="button"
+              disabled
               className="btn btn-outline-primary rounded-circle me-2"
             >
               <i className="fab fa-facebook-f"></i>
             </button>
             <button
               type="button"
+              disabled
               className="btn btn-outline-dark rounded-circle"
             >
               <i className="fab fa-github"></i>
