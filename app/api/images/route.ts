@@ -1,38 +1,25 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createEdgeRouter } from "next-connect";
 import {
   uploadImageToCloudinary,
   getAllImages,
-  deleteImage,
 } from "@/backend/controllers/imageControllers";
-import dbConnect from "@/backend/config/dbConnect";
 
-interface RequestContext {
-  params: {
-    id: string;
-  };
+// Correct type parameters
+const router = createEdgeRouter<NextRequest, void>();
+/*
+router.get(async (req) => {
+  return getAllImages();
+});
+
+router.post(async (req) => {
+  return uploadImageToCloudinary(req);
+});*/
+router.get(getAllImages).post(uploadImageToCloudinary);
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  return router.run(request) as Promise<NextResponse>;
 }
 
-const router = createEdgeRouter<NextRequest, RequestContext>();
-
-dbConnect();
-
-// DELETE handler
-const handleDelete = async (req: NextRequest, ctx: RequestContext) => {
-  const { id } = ctx.params; // Get ID from route params
-  return deleteImage(req, { params: { id } });
-};
-
-router.get(getAllImages).post(uploadImageToCloudinary).delete(handleDelete);
-
-export async function GET(request: NextRequest, ctx: RequestContext) {
-  return router.run(request, ctx);
-}
-
-export async function POST(request: NextRequest, ctx: RequestContext) {
-  return router.run(request, ctx);
-}
-
-export async function DELETE(request: NextRequest, ctx: RequestContext) {
-  return router.run(request, ctx);
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  return router.run(request) as Promise<NextResponse>;
 }
