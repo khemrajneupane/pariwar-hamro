@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import "./uploadimages.css";
 
 const UploadImages = () => {
+  const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -71,7 +73,8 @@ const UploadImages = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to upload image");
+        console.log(data);
+        throw new Error(data.message || "Failed to upload image");
       }
 
       setUploadResult({
@@ -82,6 +85,9 @@ const UploadImages = () => {
         },
         message: "Image uploaded successfully",
       });
+      setTimeout(() => {
+        router.push("/");
+      }, 3000);
     } catch (err: any) {
       setError(err.message);
       setUploadResult({

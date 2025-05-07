@@ -4,6 +4,7 @@ import {
   uploadImageToCloudinary,
   getAllImages,
 } from "@/backend/controllers/imageControllers";
+import { isAuthenticatedUser } from "@/backend/middlewares/auth";
 
 // Correct type parameters
 const router = createEdgeRouter<NextRequest, void>();
@@ -15,7 +16,9 @@ router.get(async (req) => {
 router.post(async (req) => {
   return uploadImageToCloudinary(req);
 });*/
-router.get(getAllImages).post(uploadImageToCloudinary);
+router.get(getAllImages);
+router.use(isAuthenticatedUser).post(uploadImageToCloudinary);
+
 export async function GET(request: NextRequest): Promise<NextResponse> {
   return router.run(request) as Promise<NextResponse>;
 }
