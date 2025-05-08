@@ -8,17 +8,17 @@ interface RequestContext {
     id: string;
   };
 }
-const router = createEdgeRouter<NextRequest, RequestContext>();
+const router = createEdgeRouter<NextRequest, void>();
 
-router.use(isAuthenticatedUser).delete(deleteImage);
-
+router.delete(deleteImage);
+/*
 export async function DELETE(
   request: NextRequest,
   ctx: RequestContext
 ): Promise<NextResponse> {
   return router.run(request, ctx) as Promise<NextResponse>;
-}
-/*
+}*/
+
 export async function DELETE(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -26,4 +26,3 @@ export async function DELETE(
   const { id } = await context.params;
   return deleteImage(request, { params: { id } });
 }
-*/

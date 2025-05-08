@@ -29,6 +29,7 @@ const Login = () => {
     if (result?.error) {
       toast.error(result.error);
     } else {
+      toast.success("Login successful");
       router.replace("/");
     }
   };

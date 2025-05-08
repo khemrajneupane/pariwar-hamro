@@ -8,7 +8,6 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 // Upload image
 export const uploadImageToCloudinary = async (req: NextRequest) => {
   const session = await getToken({ req });
-  console.log("session", session?.name);
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -52,6 +51,7 @@ export const getAllImages = async () => {
 // Delete image
 export const deleteImage = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const session = await getToken({ req });
     try {
       await dbConnect();
       const image = await Image.findById(params.id);
@@ -59,7 +59,7 @@ export const deleteImage = catchAsyncErrors(
       if (!image) {
         return NextResponse.json({ error: "Image not found" }, { status: 404 });
       }
-
+      if (!session?.name) throw new Error("Unauthorized");
       await delete_file(image.public_id);
       await Image.findByIdAndDelete(params.id);
 

@@ -34,14 +34,17 @@ const Gallery = () => {
         method: "DELETE",
       });
       const res = await response.json();
-      if (!response.ok) {
-        toast.error(res?.message);
-        throw new Error(res?.message);
+      if (response.ok) {
+        setImages(images.filter((img) => img._id !== id));
+        toast.success("image deleated");
+      } else {
+        toast.error(res?.error);
+        console.log("imagegallery", res);
+        //throw new Error(res?.error);
       }
-      setImages(images.filter((img) => img._id !== id));
-      toast.error("image deleated");
     } catch (error) {
       console.error(error);
+      //toast.error(error);
     }
   };
 
