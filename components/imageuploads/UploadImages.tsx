@@ -90,7 +90,7 @@ const UploadImages = () => {
           public_id: data.public_id,
           url: data.url,
         },
-        message: toast.error("Image uploaded successfully"),
+        message: toast.success("Image uploaded successfully"),
       });
       setTimeout(() => {
         router.push("/");
