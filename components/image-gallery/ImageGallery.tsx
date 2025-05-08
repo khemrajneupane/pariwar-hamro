@@ -129,7 +129,7 @@ const Gallery = () => {
           lazyLoad={true}
           slideOnThumbnailOver={true}
           disableThumbnailScroll={false}
-          thumbnailPosition="bottom"
+          thumbnailPosition="right"
           useBrowserFullscreen={false} // enables custom fullscreen so we can style exit button
           additionalClass="custom-gallery"
         />

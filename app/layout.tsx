@@ -6,6 +6,7 @@ import Header from "@/components/header/Header";
 import { GlobalProvider } from "./GlobalProvider";
 import Script from "next/script";
 import Footer from "@/components/layout/footer/Footer";
+import ChatWidget from "@/components/chat-bot/Chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </div>
+          <ChatWidget />
         </GlobalProvider>
         <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></Script>
         <Script src="https://kit.fontawesome.com/9edb65c86a.js"></Script>

@@ -12,8 +12,12 @@ function Footer() {
   });
   return (
     <footer className="footer">
-      Hamro Paribar Album. 2010 - {formattedDate}. All Rights Reserved.
-      <i className="fas fa-copyright"></i> <span>Khem</span>
+      <span>Hamro Paribar Album.</span>
+      <span>2010 - {formattedDate}.</span>
+      <span>
+        All Rights Reserved.<i className="fas fa-copyright"></i>{" "}
+        <span>Khem</span>
+      </span>
     </footer>
   );
 }
