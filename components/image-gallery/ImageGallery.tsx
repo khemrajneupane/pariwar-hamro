@@ -114,11 +114,20 @@ const Gallery = () => {
       ) : (
         <ImageGallery
           items={galleryItems}
-          showPlayButton={true}
           showFullscreenButton={true}
+          showPlayButton={true}
           showThumbnails={true}
+          showNav={true}
+          showBullets={true}
+          slideDuration={450}
+          slideInterval={3000}
           autoPlay={false}
-          slideInterval={5000}
+          infinite={true}
+          lazyLoad={true}
+          slideOnThumbnailOver={true}
+          disableThumbnailScroll={false}
+          thumbnailPosition="bottom"
+          useBrowserFullscreen={false} // enables custom fullscreen so we can style exit button
           additionalClass="custom-gallery"
         />
       )}
