@@ -1,14 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { FiTrash2 } from "react-icons/fi";
+import { toast } from "react-hot-toast";
+//import { FaExpand, FaCompress } from "react-icons/fa";
 import "./imageGallery.css";
+import Image from "next/image";
 
 const Gallery = () => {
   const [images, setImages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { data } = useSession();
 
   const fetchImages = async () => {
     try {
@@ -27,18 +33,28 @@ const Gallery = () => {
       const response = await fetch(`/api/images/${id}`, {
         method: "DELETE",
       });
-
-      if (!response.ok) throw new Error("Delete failed");
-
+      const res = await response.json();
+      if (!response.ok) {
+        toast.error(res?.message);
+        throw new Error(res?.message);
+      }
       setImages(images.filter((img) => img._id !== id));
+      toast.error("image deleated");
     } catch (error) {
-      console.error("Delete error:", error);
-      alert("Failed to delete image");
+      console.error(error);
     }
+  };
+
+  const handleFullscreenChange = () => {
+    setIsFullscreen(!!document.fullscreenElement);
   };
 
   useEffect(() => {
     fetchImages();
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
   }, []);
 
   if (loading) return <div className="loading-spinner">Loading...</div>;
@@ -50,6 +66,14 @@ const Gallery = () => {
     thumbnailAlt: "Thumbnail",
     renderItem: (item: any) => (
       <div className="gallery-item-container">
+        {/*isFullscreen && (
+          <button
+            className="custom-exit-fullscreen"
+            onClick={() => document.exitFullscreen()}
+          >
+            <FaCompress />
+          </button>
+        )*/}
         <img
           src={item.original}
           alt={item.originalAlt}
@@ -65,21 +89,39 @@ const Gallery = () => {
         >
           <FiTrash2 className="trash-icon" />
         </button>
+        {data?.user && (
+          <div className="image-info">Uploaded by {data?.user?.name}</div>
+        )}
       </div>
     ),
   }));
 
   return (
     <div className="gallery-container">
-      <ImageGallery
-        items={galleryItems}
-        showPlayButton={true}
-        showFullscreenButton={true}
-        showThumbnails={true}
-        autoPlay={false}
-        slideInterval={5000}
-        additionalClass="custom-gallery"
-      />
+      {images.length === 0 ? (
+        <div className="empty-gallery">
+          <div className="default-image-container">
+            <Image
+              src="/images/firstimage.jpg"
+              alt="Default family image"
+              width={800}
+              height={600}
+              className="default-image"
+            />
+            <p className="empty-message">Upload more हाम्रो परिवार photos!</p>
+          </div>
+        </div>
+      ) : (
+        <ImageGallery
+          items={galleryItems}
+          showPlayButton={true}
+          showFullscreenButton={true}
+          showThumbnails={true}
+          autoPlay={false}
+          slideInterval={5000}
+          additionalClass="custom-gallery"
+        />
+      )}
     </div>
   );
 };

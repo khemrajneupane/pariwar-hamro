@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Image from "../models/images";
 import { upload_file, delete_file } from "../utils/cloudinary";
 import dbConnect from "../config/dbConnect";
+import { getToken } from "next-auth/jwt";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 
 // Upload image
 export const uploadImageToCloudinary = async (req: NextRequest) => {
+  const session = await getToken({ req });
+  console.log("session", session?.name);
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
@@ -23,6 +27,7 @@ export const uploadImageToCloudinary = async (req: NextRequest) => {
     const newImage = await Image.create({
       public_id: uploadResult.public_id,
       url: uploadResult.url,
+      username: session?.name,
     });
 
     return NextResponse.json({
@@ -45,29 +50,28 @@ export const getAllImages = async () => {
 };
 
 // Delete image
-export const deleteImage = async (
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) => {
-  try {
-    await dbConnect();
-    const image = await Image.findById(params.id);
+export const deleteImage = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    try {
+      await dbConnect();
+      const image = await Image.findById(params.id);
 
-    if (!image) {
-      return NextResponse.json({ error: "Image not found" }, { status: 404 });
+      if (!image) {
+        return NextResponse.json({ error: "Image not found" }, { status: 404 });
+      }
+
+      await delete_file(image.public_id);
+      await Image.findByIdAndDelete(params.id);
+
+      return NextResponse.json({
+        success: true,
+        message: "Image deleted successfully",
+      });
+    } catch (error: any) {
+      return NextResponse.json(
+        { error: error.message || "Delete failed" },
+        { status: 500 }
+      );
     }
-
-    await delete_file(image.public_id);
-    await Image.findByIdAndDelete(params.id);
-
-    return NextResponse.json({
-      success: true,
-      message: "Image deleted successfully",
-    });
-  } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message || "Delete failed" },
-      { status: 500 }
-    );
   }
-};
+);

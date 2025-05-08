@@ -36,7 +36,6 @@ const Header = () => {
     day: "numeric",
   });
   const { data } = useSession();
-  console.log("loggedin data", data?.user);
   const logoutHandler = () => {
     signOut();
   };

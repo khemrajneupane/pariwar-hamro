@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 import "./uploadimages.css";
 
 const UploadImages = () => {
@@ -26,13 +27,15 @@ const UploadImages = () => {
 
     // Validate file type
     if (!selectedFile.type.match("image.*")) {
-      setError("Please select an image file (JPEG, PNG, etc.)");
+      toast.error("Please select an image file (JPEG, PNG, etc.)");
+      //setError("Please select an image file (JPEG, PNG, etc.)");
       return;
     }
 
     // Validate file size (5MB max)
     if (selectedFile.size > 5 * 1024 * 1024) {
-      setError("File size must be less than 5MB");
+      toast.error("File size must be less than 5MB");
+      //setError("File size must be less than 5MB");
       return;
     }
 
@@ -54,7 +57,8 @@ const UploadImages = () => {
     e.preventDefault();
 
     if (!file) {
-      setError("Please select a file first");
+      toast.error("Please select a file first");
+      //setError("Please select a file first");
       return;
     }
 
@@ -73,8 +77,11 @@ const UploadImages = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        console.log(data);
-        throw new Error(data.message || "Failed to upload image");
+        console.log("upload error", data);
+        toast.error(data.message || data.error || "Failed to upload image");
+        return;
+        //throw new Error("Please login to upload");
+        //throw new Error(data.message || data.error || "Failed to upload image");
       }
 
       setUploadResult({
@@ -83,16 +90,17 @@ const UploadImages = () => {
           public_id: data.public_id,
           url: data.url,
         },
-        message: "Image uploaded successfully",
+        message: toast.error("Image uploaded successfully"),
       });
       setTimeout(() => {
         router.push("/");
       }, 3000);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message);
+      //setError(err.message);
       setUploadResult({
         success: false,
-        message: err.message,
+        message: toast.error(err.message),
       });
     } finally {
       setUploading(false);
@@ -157,10 +165,10 @@ const UploadImages = () => {
         </button>
 
         {/* Error Message */}
-        {error && <div className="error-message">× {error}</div>}
+        {/*error && <div className="error-message">× {error}</div>*/}
 
         {/* Success Message */}
-        {uploadResult?.success && uploadResult.data && (
+        {/*uploadResult?.success && uploadResult.data && (
           <div className="success-message">
             <span className="success-icon">✓</span>
             <span>{uploadResult.message}</span>
@@ -174,7 +182,7 @@ const UploadImages = () => {
               {uploadResult.data.url}
             </a>
           </div>
-        )}
+        )*/}
       </form>
     </div>
   );
