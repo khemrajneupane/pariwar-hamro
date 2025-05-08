@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 
@@ -34,9 +34,11 @@ const Login = () => {
     }
   };
   const googleLogin = async () => await signIn("google");
-  /*if (data) {
-    router.replace("/");
-  }*/
+  useEffect(() => {
+    if (data) {
+      router.replace("/");
+    }
+  }, [data, router]);
   return (
     <div className="row wrapper justify-content-center">
       <div className="col-12 col-md-8 col-lg-6 col-xl-5">
