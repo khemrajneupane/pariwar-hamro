@@ -93,12 +93,12 @@ const Gallery = () => {
           <FiTrash2 className="trash-icon" />
         </button>
         {data?.user && (
-          <div className="image-info">Uploaded by {data?.user?.name}</div>
+          <div className="image-info">Uploaded by {img?.username}</div>
         )}
       </div>
     ),
   }));
-
+  console.log("imagenames", images);
   return (
     <div className="gallery-container">
       {images.length === 0 ? (

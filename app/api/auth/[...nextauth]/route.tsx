@@ -56,16 +56,33 @@ async function auth(req: NextRequest, res: any) {
     ],
     callbacks: {
       jwt: async ({ token, user }) => {
-        //console.log("token: ", token)
-        // console.log("user: ", user)
         const jwtToken = token as Token;
-        user && (token.user = user);
+
+        // If logging in for the first time (Google login included)
+        if (user && user.email) {
+          await dbConnect();
+
+          let dbUser = await User.findOne({ email: user.email });
+
+          if (!dbUser) {
+            // Create a new user in MongoDB if not found
+            dbUser = await User.create({
+              name: user.name || "No Name",
+              email: user.email,
+              picture: user.image || "",
+              password: user.name, // Leave empty for Google OAuth
+              role: "user",
+              createdAt: new Date(),
+            });
+          }
+
+          jwtToken.user = dbUser;
+        }
 
         // Update session when user is updated
         if (req.url?.includes("/api/auth/session?update")) {
-          // Hit the database and return the updated user
           const updatedUser = await User.findById(jwtToken?.user?._id);
-          token.user = updatedUser;
+          jwtToken.user = updatedUser;
         }
 
         return token;
@@ -73,11 +90,11 @@ async function auth(req: NextRequest, res: any) {
       session: async ({ session, token }) => {
         session.user = token.user as IUser;
         //@ts-ignore
-        delete session?.user?.password; // otherwise when you console.log session in pages, it will be visible.
-
+        delete session?.user?.password;
         return session;
       },
     },
+
     pages: {
       signIn: "/login",
     },

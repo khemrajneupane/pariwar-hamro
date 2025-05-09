@@ -1,20 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import User from "../models/user";
+import dbConnect from "../config/dbConnect";
 
 // Register user  =>  /api/auth/register
 export const registerUser = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json();
 
-  const { name, email, password } = body;
+  const { name, email, password, picture } = body;
 
   const user = await User.create({
     name,
     email,
     password,
+    picture,
   });
 
   return NextResponse.json({
     success: true,
   });
 });
+
+// Get all users
+export const getAllUsers = async () => {
+  await dbConnect();
+  const users = await User.find({});
+  return NextResponse.json({ users });
+};

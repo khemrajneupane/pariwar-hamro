@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { toast } from "react-hot-toast";
 import ButtonLoader from "../layout/ButtonLoader";
 
 const Register = () => {
@@ -36,13 +37,15 @@ const Register = () => {
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || "Registration failed");
+      if (response.ok) {
+        // Redirect to login after successful registration
+        router.push("/login?registered=true");
+      } else {
+        toast.error(data.message);
+        //throw new Error(data.message || "Registration failed");
       }
-
-      // Redirect to login after successful registration
-      router.push("/login?registered=true");
     } catch (err: any) {
+      toast.error(err.message);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -50,61 +53,68 @@ const Register = () => {
   };
 
   return (
-    <div className="wrapper">
-      <div className="col-10 col-lg-5">
-        <form className="shadow rounded bg-body" onSubmit={handleSubmit}>
-          <h2 className="mb-4">Join Us</h2>
+    <div className="container min-vh-100 d-flex justify-content-center align-items-center">
+      <div className="col-12 col-sm-10 col-md-8 col-lg-5">
+        <div className="card shadow-sm rounded-4">
+          <div className="card-body p-4">
+            <h2 className="text-center mb-4">Join Us</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name_field" className="form-label">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name_field"
+                  className="form-control"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
 
-          <div className="mb-3">
-            <label htmlFor="name_field" className="form-label">
-              {" "}
-              Full Name{" "}
-            </label>
-            <input
-              type="text"
-              id="name_field"
-              className="form-control"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+              <div className="mb-3">
+                <label htmlFor="email_field" className="form-label">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email_field"
+                  className="form-control"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="password_field" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password_field"
+                  className="form-control"
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  disabled={loading}
+                  required
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-primary w-100 py-2"
+                disabled={loading}
+              >
+                {loading ? <ButtonLoader /> : "Register"}
+              </button>
+            </form>
           </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="email_field">
-              {" "}
-              Email{" "}
-            </label>
-            <input
-              type="email"
-              id="email_field"
-              className="form-control"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="mb-3">
-            <label className="form-label" htmlFor="password_field">
-              {" "}
-              Password{" "}
-            </label>
-            <input
-              type="password"
-              id="password_field"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-
-          <button type="submit" className="btn form-btn w-100 py-2">
-            {loading ? <ButtonLoader /> : "Register"}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );

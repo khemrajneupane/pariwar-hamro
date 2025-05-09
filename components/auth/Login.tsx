@@ -46,16 +46,19 @@ const Login = () => {
           className="shadow-lg rounded-3 p-4 p-sm-5 bg-white"
           onSubmit={submiHandler}
         >
-          <h1 className="mb-4 text-center">Login</h1>
+          <h1 className="mb-4 text-center text-primary">Login</h1>
 
           <div className="mb-4">
-            <label className="form-label fw-semibold" htmlFor="email_field">
+            <label
+              className="form-label fw-semibold text-dark"
+              htmlFor="email_field"
+            >
               Email
             </label>
             <input
               type="email"
               id="email_field"
-              className="form-control py-2"
+              className="form-control py-2 text-dark"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -63,13 +66,16 @@ const Login = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label fw-semibold" htmlFor="password_field">
+            <label
+              className="form-label fw-semibold text-dark"
+              htmlFor="password_field"
+            >
               Password
             </label>
             <input
               type="password"
               id="password_field"
-              className="form-control py-2"
+              className="form-control py-2 text-dark"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -80,10 +86,13 @@ const Login = () => {
             <div className="form-check">
               <input
                 type="checkbox"
-                className="form-check-input"
+                className="form-check-input text-dark"
                 id="rememberMe"
               />
-              <label className="form-check-label" htmlFor="rememberMe">
+              <label
+                className="form-check-label text-dark"
+                htmlFor="rememberMe"
+              >
                 Remember me
               </label>
             </div>
@@ -103,7 +112,10 @@ const Login = () => {
 
           <div className="d-flex justify-content-center align-items-center mb-4">
             <span className="text-muted">Don't have an account?</span>
-            <Link href="/register" className="ms-2 text-decoration-none">
+            <Link
+              href="/register"
+              className="ms-2 text-decoration-none text-primary"
+            >
               Register Here
             </Link>
           </div>

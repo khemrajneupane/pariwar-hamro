@@ -5,40 +5,103 @@ import { signOut, useSession } from "next-auth/react";
 import "./header.css";
 import DigitalWatch from "../digital-watch/DigitalWatch";
 
+// Type for fallback member and fetched user data
+interface Member {
+  name: string;
+  picture: string;
+}
+
+interface FetchedUser {
+  name: string;
+  picture?: string;
+}
+
 const Header = () => {
   const [isMembersVisible, setIsMembersVisible] = useState(false);
-  const dropdownRef = useRef<HTMLButtonElement>(null);
+  const [allMembers, setAllMembers] = useState<Member[]>([]);
+  const [loading, setLoading] = useState(true);
+  const dropdownRef = useRef<HTMLImageElement>(null);
   const today = new Date();
 
-  const members = [
-    "Ranil Tandukar",
-    "Dipak Jung Rayamajhi",
-    "Debendra Chilwal",
-    "Satya Prakash Kadel",
-    "Khem Raj Neupane",
-    "Anjula Tandukar",
-    "Ishmriti Rayamajhi Baniya",
-    "Sunita Kaini",
-    "Rajya Laxmi Shrestha",
-    "Babita Gartaula Neupane",
-    "Junior Satya",
-    "Kiyana",
-    "Rivansh",
-    "Ashvika",
-    "Biansha",
-    "Riyansh",
-    "Aarush",
+  // Hardcoded fallback users
+  const fallbackMembers: Member[] = [
+    { name: "Ranil Tandukar", picture: "/images/user-heart-fill.png" },
+    { name: "Dipak Jung Rayamajhi", picture: "/images/user-heart-fill.png" },
+    { name: "Debendra Chilwal", picture: "/images/user-heart-fill.png" },
+    { name: "Satya Prakash Kadel", picture: "/images/user-heart-fill.png" },
+    { name: "Khem Raj Neupane", picture: "/images/user-heart-fill.png" },
+    { name: "Anjula Tandukar", picture: "/images/user-heart-fill.png" },
+    {
+      name: "Ishmriti Rayamajhi Baniya",
+      picture: "/images/user-heart-fill.png",
+    },
+    { name: "Sunita Kaini", picture: "/images/user-heart-fill.png" },
+    { name: "Rajya Laxmi Shrestha", picture: "/images/user-heart-fill.png" },
+    { name: "Babita Gartaula Neupane", picture: "/images/user-heart-fill.png" },
+    { name: "Junior Satya", picture: "/images/user-heart-fill.png" },
+    { name: "Kiyana", picture: "/images/user-heart-fill.png" },
+    { name: "Rivansh", picture: "/images/user-heart-fill.png" },
+    { name: "Ashvika", picture: "/images/user-heart-fill.png" },
+    { name: "Biansha", picture: "/images/user-heart-fill.png" },
+    { name: "Riyansh", picture: "/images/user-heart-fill.png" },
+    { name: "Aarush", picture: "/images/user-heart-fill.png" },
   ];
 
+  const { data } = useSession();
+  console.log("headersessiondata", data);
   const formattedDate = today.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-  const { data } = useSession();
+
+  // Fuzzy matching helper
+  const hasFourCharSubstringMatch = (str1: string, str2: string): boolean => {
+    const clean1 = str1.toLowerCase().replace(/\s+/g, "");
+    const clean2 = str2.toLowerCase().replace(/\s+/g, "");
+
+    for (let i = 0; i <= clean1.length - 4; i++) {
+      const sub = clean1.substring(i, i + 4);
+      if (clean2.includes(sub)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  // Fetch members on mount
+  useEffect(() => {
+    const fetchAllMembers = async () => {
+      try {
+        const res = await fetch("/api/auth/getallusers");
+        const data = await res.json();
+        const fetched: FetchedUser[] = data.users || [];
+
+        // Merge fetched users with fallback members using fuzzy match
+        const merged = fallbackMembers.map((fallback) => {
+          const match = fetched.find((user) =>
+            hasFourCharSubstringMatch(user.name, fallback.name)
+          );
+          return match
+            ? { name: match.name, picture: match.picture || fallback.picture }
+            : fallback;
+        });
+
+        setAllMembers(merged);
+      } catch (error) {
+        setAllMembers(fallbackMembers); // Fallback to hardcoded
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllMembers();
+  }, []);
+
   const logoutHandler = () => {
     signOut();
   };
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -55,7 +118,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  console.log("fetched allMembers", allMembers);
   return (
     <header className="header bg-primary text-white shadow-sm sticky-top py-3">
       <div className="container-fluid">
@@ -63,16 +126,30 @@ const Header = () => {
           {/* Logo and Family Members Dropdown */}
           <div className="d-flex align-items-center">
             <div className="position-relative me-3">
-              <button
-                className={`btn btn-light rounded-circle p-2 p-md-3 d-flex align-items-center justify-content-center ${
-                  isMembersVisible ? "active bg-warning" : ""
-                }`}
-                onClick={() => setIsMembersVisible(!isMembersVisible)}
-                ref={dropdownRef}
-                aria-label="Family members"
-              >
-                <span className="fs-6">👨‍👩‍👧‍👦</span>
-              </button>
+              {!data?.user ? (
+                <button
+                  className={`btn btn-light rounded-circle p-2 p-md-3 d-flex align-items-center justify-content-center ${
+                    isMembersVisible ? "active bg-warning" : ""
+                  }`}
+                  aria-label="Family members"
+                >
+                  <span className="fs-6">👨‍👩‍👧‍👦</span>
+                </button>
+              ) : (
+                <img
+                  src={
+                    data?.user?.image
+                      ? data?.user?.image
+                      : "/images/user-heart-fill.png"
+                  }
+                  alt="User"
+                  height="50px"
+                  width="50px"
+                  className="btn btn-info rounded-circle p-1 d-flex align-items-center justify-content-center"
+                  onClick={() => setIsMembersVisible(!isMembersVisible)}
+                  ref={dropdownRef}
+                />
+              )}
 
               {isMembersVisible && (
                 <div
@@ -83,14 +160,20 @@ const Header = () => {
                     Family Members
                   </h3>
                   <ul className="members-list list-unstyled">
-                    {members.map((member, index) => (
+                    {allMembers.map((member, index) => (
                       <li
                         key={index}
                         className="member-item py-2 px-3 rounded hover-bg-light"
                       >
                         <div className="d-flex align-items-center fs-6 fs-md-6 fs-lg-5 fs-xl-4">
-                          <span className="me-2">👤</span>
-                          <span>{member}</span>
+                          <img
+                            src={member.picture}
+                            alt={member.name}
+                            height="40px"
+                            width="40px"
+                            className="rounded-circle me-2"
+                          />
+                          <span className="text-truncate">{member.name}</span>
                         </div>
                       </li>
                     ))}
