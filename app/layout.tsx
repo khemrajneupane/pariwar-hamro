@@ -6,8 +6,8 @@ import Header from "@/components/header/Header";
 import { GlobalProvider } from "./GlobalProvider";
 import Script from "next/script";
 import Footer from "@/components/layout/footer/Footer";
-import ChatWidget from "@/components/chat-bot/Chatbot";
 import SocketChat from "@/components/socket-chat/SocketChat";
+import ChatWidget from "@/components/chat-bot/Chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +37,6 @@ export default function RootLayout({
             <Header />
             {children}
             <ChatWidget />
-            <SocketChat />
             <Footer />
           </div>
         </GlobalProvider>
