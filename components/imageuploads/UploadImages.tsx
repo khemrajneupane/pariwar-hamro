@@ -24,7 +24,7 @@ const UploadImages = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (!selectedFile) return;
-
+    console.log("selectedFile", selectedFile);
     // Validate file type
     if (!selectedFile.type.match("image.*")) {
       toast.error("Please select an image file (JPEG, PNG, etc.)");
@@ -113,10 +113,7 @@ const UploadImages = () => {
 
       <form onSubmit={handleSubmit} className="upload-form">
         {/* File Input Area */}
-        <div
-          className={`drop-zone ${!preview ? "empty" : ""}`}
-          onClick={() => !preview && fileInputRef.current?.click()}
-        >
+        <div className={`drop-zone ${!preview ? "empty" : ""}`}>
           {!preview ? (
             <div className="drop-zone-content">
               <div className="upload-icon">↑</div>
@@ -163,26 +160,6 @@ const UploadImages = () => {
             <>↑ Upload Image</>
           )}
         </button>
-
-        {/* Error Message */}
-        {/*error && <div className="error-message">× {error}</div>*/}
-
-        {/* Success Message */}
-        {/*uploadResult?.success && uploadResult.data && (
-          <div className="success-message">
-            <span className="success-icon">✓</span>
-            <span>{uploadResult.message}</span>
-            <a
-              href={uploadResult.data.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="image-link"
-            >
-              <span className="image-link-icon">i</span>
-              {uploadResult.data.url}
-            </a>
-          </div>
-        )*/}
       </form>
     </div>
   );

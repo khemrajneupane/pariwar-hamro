@@ -121,6 +121,11 @@ const Header = () => {
   console.log("fetched allMembers", allMembers);
   return (
     <header className="header bg-primary text-white shadow-sm sticky-top py-3">
+      <h1 className="logo-text mb-0 fs-6 fs-sm-6 fs-md-5 fs-lg-4 fs-xl-3 fw-bold">
+        <Link href="/" className="text-white text-decoration-none">
+          {`हाम्रो परिवार ${data?.user?.name ? data?.user?.name : ""}`}
+        </Link>
+      </h1>
       <div className="container-fluid">
         <div className="d-flex justify-content-between align-items-center">
           {/* Logo and Family Members Dropdown */}
@@ -181,14 +186,7 @@ const Header = () => {
                 </div>
               )}
             </div>
-
-            <h1 className="logo-text mb-0 fs-6 fs-md-5 fs-lg-4 fs-xl-3 fw-bold">
-              <Link href="/" className="text-white text-decoration-none">
-                {`हाम्रो परिवार ${data?.user?.name ? data?.user?.name : ""}`}
-              </Link>
-            </h1>
           </div>
-
           {/* Current Date */}
           <div className="d-none d-lg-block bg-white text-primary rounded-pill px-3 py-1 fw-semibold">
             {formattedDate}

@@ -79,19 +79,13 @@ const SocketChat: React.FC = () => {
         to: recipient,
         message,
       });
-      setChatLog((prev) => [
-        ...prev,
-        `${data?.user?.name}(to ${recipient}): ${message}`,
-      ]);
+      setChatLog((prev) => [...prev, `You (to ${recipient}): ${message}`]);
     } else {
       socket.emit("publicMessage", {
         from: username,
         message,
       });
-      setChatLog((prev) => [
-        ...prev,
-        `${data?.user?.name}(to all): ${message}`,
-      ]);
+      //setChatLog((prev) => [...prev, `You (to all): ${message}`]);
     }
 
     setMessage("");
@@ -148,9 +142,7 @@ const SocketChat: React.FC = () => {
             type="text"
             placeholder="e.g. Khem"
             value={username}
-            onChange={(e) =>
-              setUsername(data?.user?.name ? data?.user?.name : e.target.value)
-            }
+            onChange={(e) => setUsername(e.target.value)}
             onBlur={handleRegister}
           />
         </div>

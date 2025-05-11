@@ -22,6 +22,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "हाम्रो परिवार",
   description: "हाम्रो परिवार",
+  other: {
+    // in order for the app to be open from third party sources, e.g. facebook messangers, whats app messangers etc.
+    "al:web:url": "https://pariwar-hamro.vercel.app/",
+    "al:web:should_fallback": "false",
+  },
 };
 
 export default function RootLayout({
