@@ -26,7 +26,7 @@ const Header = () => {
   // Hardcoded fallback users
   const fallbackMembers: Member[] = [
     { name: "Ranil Tandukar", picture: "/images/user-heart-fill.png" },
-    { name: "Dipak Jung Rayamajhi", picture: "/images/user-heart-fill.png" },
+    { name: "Dipak Raya", picture: "/images/user-heart-fill.png" },
     { name: "Debendra Chilwal", picture: "/images/user-heart-fill.png" },
     { name: "Satya Prakash Kadel", picture: "/images/user-heart-fill.png" },
     { name: "Khem Raj Neupane", picture: "/images/user-heart-fill.png" },
@@ -37,7 +37,7 @@ const Header = () => {
     },
     { name: "Sunita Kaini", picture: "/images/user-heart-fill.png" },
     { name: "Rajya Laxmi Shrestha", picture: "/images/user-heart-fill.png" },
-    { name: "Babita Gartaula Neupane", picture: "/images/user-heart-fill.png" },
+    { name: "Babita neupane", picture: "/images/user-heart-fill.png" },
     { name: "Junior Satya", picture: "/images/user-heart-fill.png" },
     { name: "Kiyana", picture: "/images/user-heart-fill.png" },
     { name: "Rivansh", picture: "/images/user-heart-fill.png" },
