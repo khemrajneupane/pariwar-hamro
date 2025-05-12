@@ -194,7 +194,12 @@ const Header = () => {
           <div className="current-date d-none d-md-block bg-white text-primary rounded-pill px-3 py-1 fw-semibold">
             {<DigitalWatch />}
           </div>
-
+          <Link
+            href="/about"
+            className="nav-link btn btn-success btn-sm px-3 py-1 rounded-pill"
+          >
+            About
+          </Link>
           {/* Navigation Links */}
           <nav className="nav-links d-flex align-items-center gap-3">
             <Link
