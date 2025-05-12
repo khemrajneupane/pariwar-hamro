@@ -67,9 +67,9 @@ async function auth(req: NextRequest, res: any) {
           if (!dbUser) {
             // Create a new user in MongoDB if not found
             dbUser = await User.create({
-              name: user.name || "No Name",
+              name: user.name,
               email: user.email,
-              picture: user.image || "",
+              image: user.image,
               password: user.name, // Leave empty for Google OAuth
               role: "user",
               createdAt: new Date(),

@@ -4,7 +4,7 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  picture: string;
+  image: string;
   role: string;
   createdAt: Date;
   resetPasswordToken: string;
@@ -28,7 +28,7 @@ const userSchema: Schema<IUser> = new mongoose.Schema({
     minlength: [6, "Your password must be longer than 6 characters"],
     select: false,
   },
-  picture: {
+  image: {
     type: String,
   },
   role: {

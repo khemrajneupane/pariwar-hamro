@@ -8,12 +8,12 @@ import DigitalWatch from "../digital-watch/DigitalWatch";
 // Type for fallback member and fetched user data
 interface Member {
   name: string;
-  picture: string;
+  image: string;
 }
 
 interface FetchedUser {
   name: string;
-  picture?: string;
+  image?: string;
 }
 
 const Header = () => {
@@ -25,30 +25,29 @@ const Header = () => {
 
   // Hardcoded fallback users
   const fallbackMembers: Member[] = [
-    { name: "Ranil Tandukar", picture: "/images/user-heart-fill.png" },
-    { name: "Dipak Raya", picture: "/images/user-heart-fill.png" },
-    { name: "Debendra Chilwal", picture: "/images/user-heart-fill.png" },
-    { name: "Satya Prakash Kadel", picture: "/images/user-heart-fill.png" },
-    { name: "Khem Raj Neupane", picture: "/images/user-heart-fill.png" },
-    { name: "Anjula Tandukar", picture: "/images/user-heart-fill.png" },
+    { name: "Ranil Tandukar", image: "/images/user-heart-fill.png" },
+    { name: "Dipak Raya", image: "/images/user-heart-fill.png" },
+    { name: "Debendra Chilwal", image: "/images/user-heart-fill.png" },
+    { name: "Satya Prakash Kadel", image: "/images/user-heart-fill.png" },
+    { name: "Khem Raj Neupane", image: "/images/user-heart-fill.png" },
+    { name: "Anjula Tandukar", image: "/images/user-heart-fill.png" },
     {
       name: "Ishmriti Rayamajhi Baniya",
-      picture: "/images/user-heart-fill.png",
+      image: "/images/user-heart-fill.png",
     },
-    { name: "Sunita Kaini", picture: "/images/user-heart-fill.png" },
-    { name: "Rajya Laxmi Shrestha", picture: "/images/user-heart-fill.png" },
-    { name: "Babita neupane", picture: "/images/user-heart-fill.png" },
-    { name: "Junior Satya", picture: "/images/user-heart-fill.png" },
-    { name: "Kiyana", picture: "/images/user-heart-fill.png" },
-    { name: "Rivansh", picture: "/images/user-heart-fill.png" },
-    { name: "Ashvika", picture: "/images/user-heart-fill.png" },
-    { name: "Biansha", picture: "/images/user-heart-fill.png" },
-    { name: "Riyansh", picture: "/images/user-heart-fill.png" },
-    { name: "Aarush", picture: "/images/user-heart-fill.png" },
+    { name: "Sunita Kaini", image: "/images/user-heart-fill.png" },
+    { name: "Rajya Laxmi Shrestha", image: "/images/user-heart-fill.png" },
+    { name: "Babita neupane", image: "/images/user-heart-fill.png" },
+    { name: "Junior Satya", image: "/images/user-heart-fill.png" },
+    { name: "Kiyana", image: "/images/user-heart-fill.png" },
+    { name: "Rivansh", image: "/images/user-heart-fill.png" },
+    { name: "Ashvika", image: "/images/user-heart-fill.png" },
+    { name: "Biansha", image: "/images/user-heart-fill.png" },
+    { name: "Riyansh", image: "/images/user-heart-fill.png" },
+    { name: "Aarush", image: "/images/user-heart-fill.png" },
   ];
 
   const { data } = useSession();
-  console.log("headersessiondata", data);
   const formattedDate = today.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -60,7 +59,7 @@ const Header = () => {
     const clean1 = str1.toLowerCase().replace(/\s+/g, "");
     const clean2 = str2.toLowerCase().replace(/\s+/g, "");
 
-    for (let i = 0; i <= clean1.length - 4; i++) {
+    for (let i = 0; i <= clean1.length - 8; i++) {
       const sub = clean1.substring(i, i + 4);
       if (clean2.includes(sub)) {
         return true;
@@ -83,7 +82,7 @@ const Header = () => {
             hasFourCharSubstringMatch(user.name, fallback.name)
           );
           return match
-            ? { name: match.name, picture: match.picture || fallback.picture }
+            ? { name: match.name, image: match.image || fallback.image }
             : fallback;
         });
 
@@ -118,7 +117,6 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  console.log("fetched allMembers", allMembers);
   return (
     <header className="header bg-primary text-white shadow-sm sticky-top py-3">
       <h1 className="logo-text mb-0 fs-6 fs-sm-6 fs-md-5 fs-lg-4 fs-xl-3 fw-bold">
@@ -172,7 +170,7 @@ const Header = () => {
                       >
                         <div className="d-flex align-items-center fs-6 fs-md-6 fs-lg-5 fs-xl-4">
                           <img
-                            src={member.picture}
+                            src={member.image}
                             alt={member.name}
                             height="40px"
                             width="40px"

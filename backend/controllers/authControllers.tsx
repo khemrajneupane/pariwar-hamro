@@ -7,13 +7,13 @@ import dbConnect from "../config/dbConnect";
 export const registerUser = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json();
 
-  const { name, email, password, picture } = body;
+  const { name, email, password, image } = body;
 
   const user = await User.create({
     name,
     email,
     password,
-    picture,
+    image,
   });
 
   return NextResponse.json({
